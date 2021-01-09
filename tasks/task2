@@ -1,0 +1,6 @@
+1 p 10
+2 n 4
+
+p ** n
+
+What's the result of ${{p}}^{{{n}}}$?

@@ -1,0 +1,7 @@
+-10 x 10
+-1 y 2
+not0 y
+
+x + 2 * y
+
+What's the result of {{x}} + 2 * {{y}}?
