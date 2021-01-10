@@ -34,7 +34,9 @@ for 'names.txt'.IO.lines -> $name {
     my Str $file-name = "$name.tex";
     spurt "problems/$file-name", build-problem-set($template, $name, @problems);
     unless so compile-tex($file-name) {
-        warn "Couldn't compile latex file for $name";
+        warn "Couldn't compile latex file for $name."
+              ~ "Look at 'problems/out/$name.log' for details.";
+        if prompt("Continue? [Y/n]: ").lc eq 'n' { last } else { next  }
     }
 
     $answers.say: "$name," ~ join-csv @problems>>.answer;
