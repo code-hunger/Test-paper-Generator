@@ -1,7 +1,7 @@
 use lib '.';
 use Problemlib;
 
-my Template @templates = 'tasks'.IO.dir.sort.map: { template-from-file $_ };
+my Template @templates = 'tasks'.IO.dir.sort.map: &template-from-file;
 
 my $answers = open 'answers.csv', :w;
 
@@ -20,14 +20,16 @@ sub compile-tex {
         :out('/dev/null'))
 }
 
-$answers.say: "Name," ~ @templates>>.name.join(',');
+my &join-csv = *.join(',');
+
+$answers.say: "Name," ~ join-csv @templates>>.name;
 
 for 'names.txt'.IO.lines -> $name {
     next unless $name.chars;
 
     $name.say;
 
-    my Problem @problems = @templates.map: { make-problem $_ };
+    my Problem @problems = @templates.map: &make-problem;
 
     my Str $file-name = "$name.tex";
     spurt "problems/$file-name", build-problem-set($template, $name, @problems);
@@ -35,7 +37,7 @@ for 'names.txt'.IO.lines -> $name {
         warn "Couldn't compile latex file for $name";
     }
 
-    $answers.say: "$name, " ~ @problems.map(*.answer).join(',');
+    $answers.say: "$name," ~ join-csv @problems>>.answer;
 }
 
 $answers.close;
