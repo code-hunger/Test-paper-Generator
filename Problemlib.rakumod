@@ -8,6 +8,7 @@ class Problem is export {
 }
 
 class Template is export {
+    has Str $.name;
     has Str $.body;
     has Str $.answer;
     has %.constraints;
@@ -20,7 +21,7 @@ sub template-from-file(IO::Path:D $file) is export {
     my Str $answer = "";
     my Str $body;
 
-    my @file-readers = 
+    my @file-readers =
         sub read-constraint(Str:D $str) {
             if $str ~~ rx/^ (\S+) \s (\S+) \s (\S+) $/ {
                 %constraints{$1.Str} = ($0.Int, $2.Int);
@@ -43,7 +44,7 @@ sub template-from-file(IO::Path:D $file) is export {
         @file-readers[$reader]($line);
     }
 
-    Template.new: :$body, :$answer, :%constraints, :@non-zero
+    Template.new: :name($file.basename), :$body, :$answer,:%constraints, :@non-zero
 }
 
 sub make-problem(Template $template) is export {

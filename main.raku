@@ -20,6 +20,8 @@ sub compile-tex {
         :out('/dev/null'))
 }
 
+$answers.say: "Name," ~ @templates>>.name.join(',');
+
 for 'names.txt'.IO.lines -> $name {
     next unless $name.chars;
 
