@@ -44,7 +44,9 @@ sub template-from-file(IO::Path:D $file) is export {
         @file-readers[$reader]($line);
     }
 
-    Template.new: :name($file.basename), :$body, :$answer,:%constraints, :@non-zero
+    Template.new: :name($file.basename),
+                  :$body, :$answer,
+                  :%constraints, :@non-zero
 }
 
 sub make-problem(Template $template) is export {
@@ -78,8 +80,11 @@ sub make-problem(Template $template) is export {
     Problem.new: :$answer, :$body
 }
 
-sub build-problem-set(Str $template is copy, Str $student-name, Problem @problems) is export {
-    my Str $problem-set = @problems.map('\begin{problem}' ~ *.body ~ '\end{problem}').join;
+sub build-problem-set(Str $template is copy,
+                      Str $student-name,
+                      Problem @problems) is export {
+    my Str $problem-set =
+        @problems.map('\begin{problem}' ~ *.body ~ '\end{problem}').join;
 
     given $template {
         s/'!student-name!'/$student-name/;
