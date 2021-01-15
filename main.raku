@@ -39,6 +39,8 @@ for 'names.txt'.IO.lines -> $name {
         if prompt("Continue? [Y/n]: ").lc eq 'n' { last } else { next  }
     }
 
+    move "problems/out/$name.pdf", "problems/pdfs/$name.pdf";
+
     $answers.say: "$name," ~ join-csv @problems>>.answer;
 }
 
